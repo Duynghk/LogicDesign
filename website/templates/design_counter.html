@@ -1,0 +1,64 @@
+{% extends "base.html" %} {% block content %}
+<table class="my-table">
+  <thead class="title-row">
+    <tr>
+      <th>Column 1</th>
+      <th>Column 2</th>
+      <th>Column 3</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><input type="text" name="row1col1" /></td>
+      <td><input type="text" name="row1col2" /></td>
+      <td><input type="text" name="row1col3" /></td>
+    </tr>
+    <tr>
+      <td><input type="text" name="row2col1" /></td>
+      <td><input type="text" name="row2col2" /></td>
+      <td><input type="text" name="row2col3" /></td>
+    </tr>
+    <tr>
+      <td><input type="text" name="row3col1" /></td>
+      <td><input type="text" name="row3col2" /></td>
+      <td><input type="text" name="row3col3" /></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Thêm nút tăng số hàng -->
+<button onclick="addRow()">Thêm hàng</button>
+
+<!-- Thêm nút tăng số cột -->
+<button onclick="addColumn()">Thêm cột</button>
+<script>
+  function addRow() {
+    var table = document.getElementsByTagName("table")[0];
+    var newRow = table.insertRow(table.rows.length);
+    var numCols = table.rows[0].cells.length;
+    for (var i = 0; i < numCols; i++) {
+      var newCell = newRow.insertCell(i);
+      newCell.innerHTML =
+        '<input type="text" name="row' +
+        newRow.rowIndex +
+        "col" +
+        (i + 1) +
+        '" />';
+    }
+  }
+
+  function addColumn() {
+    var table = document.getElementsByTagName("table")[0];
+    var numRows = table.rows.length;
+    for (var i = 0; i < numRows; i++) {
+      var newCell = table.rows[i].insertCell(-1);
+      newCell.innerHTML =
+        '<input type="text" name="row' +
+        (i + 1) +
+        "col" +
+        table.rows[i].cells.length +
+        '" />';
+    }
+  }
+</script>
+{% endblock %}

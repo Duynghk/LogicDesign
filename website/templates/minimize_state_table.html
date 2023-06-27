@@ -1,0 +1,139 @@
+{% extends "base.html" %} {% block content %}
+<div class="container">
+  <div class="file-upload-container">
+    <label for="file" class="file-upload-label">
+      <span class="file-upload-icon">Upload .csv</span>
+      <span id="file-name">No file chosen</span>
+    </label>
+    <input
+      type="file"
+      name="file"
+      id="file"
+      accept=".csv"
+      class="file-upload-input"
+      onchange="handleFileUpload()"
+    />
+  </div>
+
+  <form method="POST">
+    <table class="my-table">
+      <thead class="title-row">
+        <tr>
+          <th rowspan="2">Present State</th>
+          <th colspan="2">Next State</th>
+        </tr>
+        <tr>
+          <th>A = 0</th>
+          <th>A = 1</th>
+        </tr>
+      </thead>
+      <tbody class="input-table">
+        <tr>
+          <td>
+            <input
+              type="text"
+              name="row1col1"
+              autocomplete="off"
+              placeholder="S0"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              name="row1col2"
+              autocomplete="off"
+              placeholder="S1 0"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              name="row1col3"
+              autocomplete="off"
+              placeholder="S2 1"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <input
+              type="text"
+              name="row2col1"
+              autocomplete="off"
+              placeholder="S0"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              name="row2col2"
+              autocomplete="off"
+              placeholder="S1/0"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              name="row2col3"
+              autocomplete="off"
+              placeholder="S2/1"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <input
+              type="text"
+              name="row3col1"
+              autocomplete="off"
+              placeholder="S0"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              name="row3col2"
+              autocomplete="off"
+              placeholder="S1-0"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              name="row3col3"
+              autocomplete="off"
+              placeholder="S2-1"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="button-container">
+      <button type="submit" onclick="submitForm()">Submit</button>
+      <button type="button" onclick="CreateStepTables()" class="details-btn">
+        Details
+      </button>
+    </div>
+  </form>
+  <div id="step-tables"></div>
+  <div class="spinner center">
+    <div class="spinner-blade"></div>
+    <div class="spinner-blade"></div>
+    <div class="spinner-blade"></div>
+    <div class="spinner-blade"></div>
+    <div class="spinner-blade"></div>
+    <div class="spinner-blade"></div>
+    <div class="spinner-blade"></div>
+    <div class="spinner-blade"></div>
+    <div class="spinner-blade"></div>
+    <div class="spinner-blade"></div>
+    <div class="spinner-blade"></div>
+    <div class="spinner-blade"></div>
+  </div>
+  <div id="minimize-tables"></div>
+</div>
+<script
+  type="text/javascript"
+  src="{{ url_for('static', filename='send_&_receive.js') }}"
+></script>
+{% endblock %}
