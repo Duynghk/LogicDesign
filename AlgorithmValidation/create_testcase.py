@@ -1,6 +1,7 @@
 import random
 import pandas as pd
 import os
+from minimize_state_table import minimize_state_table
 
 def create_testcase(directory,max_state):
     # Generate a random STATE_NUMBER
@@ -61,11 +62,11 @@ def create_testcase(directory,max_state):
             next_state_0 = 'S' + str(different_state_arr[random.randint(0,diff_len-1)]) + '/' + str(random.randint(0,1))
             next_state_1 = 'S' + str(different_state_arr[random.randint(0,diff_len-1)]) + '/' + str(random.randint(0,1))      
         df.loc[i] = [present_state, next_state_0, next_state_1]
-    
-    columns_to_check = ['next_state_0', 'next_state_1']
-    subset_df = df.iloc[groups[4]:STATE_NUMBER]
-    duplicate_count = subset_df.duplicated(subset=columns_to_check).sum()
-    reduce_state_num += duplicate_count
+    if groups[4] < STATE_NUMBER:
+        subset_df = df.iloc[groups[4]:STATE_NUMBER]
+        duplicate_count = minimize_state_table("","",False,subset_df)
+        reduce_state_num += duplicate_count
+        print("Repeated random state: ",duplicate_count)
     shuffled_df = df
 
     # Generate a unique file name
@@ -83,7 +84,7 @@ def create_testcase(directory,max_state):
         file.seek(-2, 2)
         file.truncate()
     
-    print("\nCreated testcase",reduce_state_num)
+    print("\nCreated testcase")
     
     # Store information about the test case
     info_testcase = {}

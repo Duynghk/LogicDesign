@@ -104,9 +104,12 @@ def split_groups(grouped_table, states_table):
     return grouped_table
 
 
-def minimize_state_table(file_name,directory):
-    file_path = os.path.join(directory, file_name)
-    data = pd.read_csv(file_path)
+def minimize_state_table(file_name,directory,read_file,df):
+    if read_file:
+        file_path = os.path.join(directory, file_name)
+        data = pd.read_csv(file_path)
+    else:
+        data = df
     # Pre-process the state table by splitting the next state columns and removing any leading/trailing white space
     state_table = pre_processing_state_table(pd.DataFrame(data))
 
