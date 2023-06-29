@@ -1,5 +1,6 @@
 import pandas as pd
 import os
+import time
 def pre_processing_state_table(data_df):
     """
     This function takes a pandas DataFrame as input and splits the next_state_0 and next_state_1 columns 
@@ -105,6 +106,7 @@ def split_groups(grouped_table, states_table):
 
 
 def minimize_state_table(file_name,directory,read_file,df):
+    start_time = time.time()
     if read_file:
         file_path = os.path.join(directory, file_name)
         data = pd.read_csv(file_path)
@@ -159,5 +161,9 @@ def minimize_state_table(file_name,directory,read_file,df):
     row_number_before = result_state_table.shape[0]
     for _, cell in grouped_table.iloc[0].items():
         result_state_table = result_state_table.drop(cell[1:], axis=0)
-
-    return row_number_before - result_state_table.shape[0]
+    end_time = time.time()
+    execution_time = end_time - start_time
+    info_minimize = {}
+    info_minimize['Number of states'] = row_number_before - result_state_table.shape[0]
+    info_minimize['Execution time'] =  execution_time
+    return info_minimize

@@ -2,8 +2,10 @@ import random
 import pandas as pd
 import os
 from minimize_state_table import minimize_state_table
+import time
 
 def create_testcase(directory,max_state):
+    start_time = time.time()
     # Generate a random STATE_NUMBER
     STATE_NUMBER = random.randint(10, max_state)
 
@@ -64,10 +66,10 @@ def create_testcase(directory,max_state):
         df.loc[i] = [present_state, next_state_0, next_state_1]
     if groups[4] < STATE_NUMBER:
         subset_df = df.iloc[groups[4]:STATE_NUMBER]
-        duplicate_count = minimize_state_table("","",False,subset_df)
+        duplicate_count = minimize_state_table("","",False,subset_df)['Number of states']
         reduce_state_num += duplicate_count
         print("Repeated random state: ",duplicate_count)
-    shuffled_df = df
+    shuffled_df = df.sample(frac=1)
 
     # Generate a unique file name
     file_name = str(STATE_NUMBER) + '_states.csv'
@@ -85,11 +87,14 @@ def create_testcase(directory,max_state):
         file.truncate()
     
     print("\nCreated testcase")
-    
+    end_time = time.time()
+    execution_time = end_time - start_time
     # Store information about the test case
     info_testcase = {}
     info_testcase['File'] = file_name
     info_testcase['State Number'] = str(STATE_NUMBER)
-    info_testcase['Number of states to minimize'] = reduce_state_num
+    info_testcase['Number of states'] = reduce_state_num
+    info_testcase['Execution time'] = execution_time
     
     return info_testcase
+create_testcase("TestCase",15)
