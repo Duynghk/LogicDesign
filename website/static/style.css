@@ -103,6 +103,13 @@ button.details-btn {
   margin-right: 0;
   display: none;
 }
+.total-state-before, .total-state-after {
+  margin-right: 20px;
+  margin-top: 1px;
+  display: block;
+  text-align: right;
+  font-weight: 500;
+}
 
 button:hover {
   opacity: 0.9;

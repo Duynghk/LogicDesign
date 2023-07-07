@@ -1,4 +1,6 @@
 let data;
+
+// Function to send form data as JSON via XMLHttpRequest
 function sendFormData(jsonData) {
   const xhr = new XMLHttpRequest();
   xhr.open("POST", "/");
@@ -7,11 +9,14 @@ function sendFormData(jsonData) {
   return xhr;
 }
 
+// Function to create step tables
 function CreateStepTables() {
   const index = ["A", "0", "1"];
   var steps = data.steps;
   const containerSteps = document.getElementById("step-tables");
   const tdiv = document.createElement("div");
+  
+  // Create tables for each step
   for (let i in steps) {
     const stepNumber = document.createElement("h6");
     stepNumber.setAttribute("class", "step-number");
@@ -21,7 +26,11 @@ function CreateStepTables() {
       "class",
       "step" + (parseInt(i) + 1).toString() + "table"
     );
+    
+    // Parse step data
     const step = JSON.parse(steps[i]["step" + (parseInt(i) + 1).toString()]);
+    
+    // Populate the table with data
     step.forEach((obj, j) => {
       const row = table.insertRow();
       const cell0 = row.insertCell();
@@ -37,24 +46,29 @@ function CreateStepTables() {
         }
       }
     });
+    
     tdiv.appendChild(stepNumber);
     tdiv.appendChild(table);
   }
+  
+  // Remove previous step tables
   while (containerSteps.firstChild) {
     containerSteps.removeChild(containerSteps.firstChild);
   }
+  
+  // Add the new step tables to the page
   containerSteps.appendChild(tdiv);
   const stepTables = document.getElementById("step-tables");
   stepTables.style.display = "block";
 }
 
+// Function to create the result table
 function CreateResultTable() {
-  // const receiveData = JSON.parse(responseText);
-  // create the table element
   var table = document.createElement("table");
   var thead = table.createTHead();
   thead.setAttribute("class", "title-row");
-  // create the table headers
+  
+  // Create the table headers
   const headers = ["Present State", "Next State", "A = 0", "A = 1"];
   var headerRow = thead.insertRow();
   headerRow.insertAdjacentHTML(
@@ -69,11 +83,15 @@ function CreateResultTable() {
   headerRow = table.insertRow();
   headerRow.insertAdjacentHTML("beforeend", "<th>" + headers[2] + "</th>");
   headerRow.insertAdjacentHTML("beforeend", "<th>" + headers[3] + "</th>");
+  
+  // Parse the result data
   var data_result = data.result;
   const data_array = JSON.parse(data_result);
+  
+  // Populate the table with data
   data_array.forEach((obj) => {
     const row = table.insertRow();
-    // Thêm dữ liệu vào từng cột của hàng
+    
     const presentStateCell = row.insertCell();
     presentStateCell.innerHTML = obj.present_state;
 
@@ -83,16 +101,27 @@ function CreateResultTable() {
     const nextState1Cell = row.insertCell();
     nextState1Cell.innerHTML = obj.next_state_1;
   });
-
+  
+  // Create Total After element
+  var TotalAfterElement = document.createElement("h6");
+  TotalAfterElement.className = "total-state-after"
+  TotalAfterElement.innerHTML = "Total state: " + data_array.length;
+  console.log("Total state: " + data_array.length);
+  
+  // Get the container element
   const container = document.getElementById("minimize-tables");
-  // remove the previous table
+
+  // Remove the previous table
   while (container.firstChild) {
     container.removeChild(container.firstChild);
   }
-  // add the table to the page
+  
+  // Add the new table to the page
   container.appendChild(table);
+  container.appendChild(TotalAfterElement);
 }
 
+// Function to show error message
 function showError(message) {
   const errorElement = document.createElement("div");
   errorElement.setAttribute("class", "alert alert-danger");
@@ -103,23 +132,32 @@ function showError(message) {
     errorContainer.removeChild(errorContainer.firstChild);
   }
   errorContainer.appendChild(errorElement);
+  
+  // Remove the error message after 0.5 seconds
   setTimeout(() => {
     errorElement.remove();
   }, 500);
 }
 
+// Function to submit the form
 function submitForm() {
   const form = document.querySelector("form");
+  
+  // Add event listener to the form's submit event
   form.addEventListener("submit", onSubmit);
+  
   function onSubmit(event) {
     event.preventDefault();
     form.removeEventListener("submit", onSubmit);
+    
     const tableData = [];
     var tableRows = document.querySelectorAll(".input-table tr");
-    // Xóa các dòng rỗng ở cuối cùng
+    
+    // Remove empty rows at the end
     const table = document.querySelector(".my-table");
     const rows = table.rows;
     var lastIndex = rows.length - 1;
+    
     while (lastIndex >= 0) {
       var lastRow = rows[lastIndex];
       var input1 = lastRow.querySelector(
@@ -131,6 +169,7 @@ function submitForm() {
       var input3 = lastRow.querySelector(
         "input[name=row" + (lastIndex-1) + "col3]"
       );
+      
       if (
         input1.value.trim() === "" &&
         input2.value.trim() === "" &&
@@ -142,7 +181,14 @@ function submitForm() {
         break;
       }
     }
+    
     tableRows = document.querySelectorAll(".input-table tr");
+    
+    // Update Total Before element
+    var TotalBeforeElement = document.getElementsByClassName("total-state-before")[0];
+    TotalBeforeElement.textContent = "Total state: " + (tableRows.length);
+    
+    // Retrieve data from each row
     tableRows.forEach((row) => {
       const presentState = row.querySelector(
         'input[name^="row"][name$="col1"]'
@@ -160,9 +206,12 @@ function submitForm() {
       };
       tableData.push(rowData);
     });
+    
     const jsonData = JSON.stringify(tableData);
     const xhr = sendFormData(jsonData);
     const spinner = document.querySelector(".spinner.center");
+    
+    // Handle the XMLHttpRequest response
     xhr.onreadystatechange = function () {
       if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
         const json = JSON.parse(this.responseText);
@@ -178,6 +227,7 @@ function submitForm() {
         spinner.style.display = "none";
       }
     };
+    
     const stepTables = document.getElementById("step-tables");
     stepTables.style.display = "none";
     spinner.style.display = "block";
