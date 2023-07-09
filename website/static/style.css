@@ -287,6 +287,11 @@ div#minimize-tables {
   }
 }
 
-#footer {
-  padding: 100px;
+.footer {
+  margin-top: 350px;
+}
+.social-icon {
+  margin-top: 2px;
+  margin-left: 9px;
+  font-size: 24px;
 }
