@@ -1,7 +1,7 @@
 Minimize State Table Website
 ============================
 
-This is a website for minimizing state tables, built using the Flask framework and utilizing the Pandas library for data processing. The website allows users to upload a CSV file containing the state table to perform calculations and minimize the state table. Additionally, users can directly input the state table from the interface.
+This is a website for minimizing state tables, built using the Flask framework and utilizing the Pandas library for data processing. The website allows users to upload a CSV file containing the state table to minimize. Additionally, users can directly input the state table from the interface.
 
 The website has been deployed and is online at the following link:  [https://logic-design.onrender.com/](https://logic-design.onrender.com/)
 ## Features
