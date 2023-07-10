@@ -28,7 +28,7 @@ After uploading a CSV file or inputting the state table, users can minimize the 
 ### 4. Display Minimized State Table
 Once the state table minimization process is complete, the result will be displayed on the user interface. The minimized state table will be presented as a table for easy viewing.
 
-### 5. Display Minimized State Table
+### 5. Show steps
 In addition to displaying the final result, the website also provides the functionality to display the step-by-step calculation for tracking the state table minimization process. Users can view each calculation step by clicking the "Detail" button to display the individual steps of the minimization process.
 
 ## Automated Test Case Generation Software
